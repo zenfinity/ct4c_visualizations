@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isotype Population Chart</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #fff; font-family: system-ui, sans-serif; }
+  .wrap { padding: 1.25rem 1rem 1.5rem; }
+  .legend { display: flex; gap: 20px; margin-bottom: 1.25rem; flex-wrap: wrap; min-height: 22px; }
+  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #666; opacity: 0; transition: opacity 0.5s; }
+  .leg-item.vis { opacity: 1; }
+  .leg-swatch { width: 24px; height: 4px; border-radius: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 340px; }
+  .fig svg { width: 100%; display: block; }
+  .caption-area { margin-top: 0.85rem; min-height: 32px; font-size: 13px; color: #666; }
+  .caption-area strong { color: #111; font-weight: 500; }
+  .replay-btn { margin-top: 1rem; background: transparent; border: 0.5px solid #aaa; border-radius: 8px; padding: 5px 14px; font-size: 12px; cursor: pointer; color: #666; display: none; }
+  .replay-btn:hover { background: #f5f5f5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="legend">
+    <div class="leg-item" id="leg-a"><div class="leg-swatch" style="background:#7F77DD"></div><span>Group A — 38%</span></div>
+    <div class="leg-item" id="leg-b"><div class="leg-swatch" style="background:#D85A30"></div><span>Group B — 18% (subset of A)</span></div>
+    <div class="leg-item" id="leg-c"><div class="leg-swatch" style="background:#1D9E75"></div><span>Group C — 62% (superset)</span></div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="caption-area" id="caption"></div>
+  <button class="replay-btn" id="replay">replay</button>
+</div>
+
+<script>
+const NEUTRAL_FILL = '#B4B2A9';
+const NEUTRAL_OPACITY = 0.28;
+const heads = [];
+const bodies = [];
+
+function buildGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  heads.length = 0;
+  bodies.length = 0;
+  const ns = 'http://www.w3.org/2000/svg';
+  for (let i = 0; i < 100; i++) {
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 20 18');
+
+    const head = document.createElementNS(ns, 'circle');
+    head.setAttribute('cx', '10');
+    head.setAttribute('cy', '4.5');
+    head.setAttribute('r', '3.8');
+
+    const body = document.createElementNS(ns, 'rect');
+    body.setAttribute('x', '4');
+    body.setAttribute('y', '10');
+    body.setAttribute('width', '12');
+    body.setAttribute('height', '7');
+    body.setAttribute('rx', '2');
+
+    [head, body].forEach(el => {
+      el.style.fill = NEUTRAL_FILL;
+      el.style.fillOpacity = NEUTRAL_OPACITY;
+      el.style.stroke = 'transparent';
+      el.style.strokeWidth = '1.2';
+      el.style.transition = 'fill 0.35s ease, fill-opacity 0.35s ease, stroke 0.35s ease';
+    });
+
+    svg.appendChild(head);
+    svg.appendChild(body);
+    grid.appendChild(svg);
+    heads.push(head);
+    bodies.push(body);
+  }
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+function setCaption(html) { document.getElementById('caption').innerHTML = html; }
+function showLegend(id) { document.getElementById(id).classList.add('vis'); }
+
+function applyFill(idx, fill) {
+  heads[idx].style.fill = fill;
+  heads[idx].style.fillOpacity = '0.88';
+  bodies[idx].style.fill = fill;
+  bodies[idx].style.fillOpacity = '0.88';
+}
+
+function applyStroke(idx, stroke) {
+  heads[idx].style.stroke = stroke;
+  bodies[idx].style.stroke = stroke;
+}
+
+async function animateFigures(indices, fill, stroke, fillDelay, strokeDelay) {
+  for (let i = 0; i < indices.length; i++) {
+    setTimeout(() => applyFill(indices[i], fill), i * fillDelay);
+  }
+  await delay(indices.length * fillDelay + 280);
+  for (let i = 0; i < indices.length; i++) {
+    setTimeout(() => applyStroke(indices[i], stroke), i * strokeDelay);
+  }
+  await delay(indices.length * strokeDelay + 380);
+}
+
+function resetAll() {
+  heads.concat(bodies).forEach(el => {
+    el.style.transition = 'none';
+    el.style.fill = NEUTRAL_FILL;
+    el.style.fillOpacity = NEUTRAL_OPACITY;
+    el.style.stroke = 'transparent';
+  });
+  setTimeout(() => {
+    heads.concat(bodies).forEach(el => {
+      el.style.transition = 'fill 0.35s ease, fill-opacity 0.35s ease, stroke 0.35s ease';
+    });
+  }, 50);
+  document.querySelectorAll('.leg-item').forEach(el => el.classList.remove('vis'));
+  setCaption('');
+  document.getElementById('replay').style.display = 'none';
+}
+
+async function runAnimation() {
+  resetAll();
+  await delay(500);
+
+  showLegend('leg-a');
+  await animateFigures(Array.from({length: 38}, (_, i) => i), '#7F77DD', '#3C3489', 38, 22);
+  setCaption('<strong>Group A:</strong> 38 of 100 — fill sweeps in, then strokes follow.');
+  await delay(900);
+
+  showLegend('leg-b');
+  await animateFigures(Array.from({length: 18}, (_, i) => i), '#D85A30', '#712B13', 42, 26);
+  setCaption('<strong>Group B:</strong> 18 figures (a subset of A) re-colored coral.');
+  await delay(900);
+
+  showLegend('leg-c');
+  await animateFigures(Array.from({length: 62}, (_, i) => i), '#1D9E75', '#085041', 25, 16);
+  setCaption('<strong>Group C:</strong> 62 figures — a superset containing all of A and B plus more.');
+  await delay(500);
+
+  document.getElementById('replay').style.display = 'inline-block';
+}
+
+buildGrid();
+document.getElementById('replay').addEventListener('click', runAnimation);
+setTimeout(runAnimation, 400);
+</script>
+</body>
+</html>

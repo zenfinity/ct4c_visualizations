@@ -48,6 +48,8 @@ function buildGrid() {
   for (let i = 0; i < 100; i++) {
     const svg = document.createElementNS(ns, 'svg');
     svg.setAttribute('viewBox', '0 0 20 18');
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '100%');
 
     const head = document.createElementNS(ns, 'circle');
     head.setAttribute('cx', '10');

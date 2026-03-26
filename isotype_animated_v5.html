@@ -24,9 +24,9 @@
 <body>
 <div class="wrap">
   <div class="legend">
-    <div class="leg-item" id="leg-1"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent — 20%</span></div>
-    <div class="leg-item" id="leg-2"><div class="leg-swatch" style="background:#56B4E9"></div><span>Working age — 63%</span></div>
-    <div class="leg-item" id="leg-3"><div class="leg-swatch" style="background:#0072B2"></div><span>Has chronic condition — 49%</span></div>
+    <div class="leg-item" id="leg-1"><div class="leg-swatch" style="background:#56B4E9"></div><span>Working age — 63%</span></div>
+    <div class="leg-item" id="leg-2"><div class="leg-swatch" style="background:#0072B2"></div><span>Has chronic condition — 49%</span></div>
+    <div class="leg-item" id="leg-3"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent — 17%</span></div>
     <div class="leg-item" id="leg-4"><div class="leg-stroke" style="border-color:#D55E00"></div><span>Does not disclose — 38%</span></div>
   </div>
   <div class="grid" id="grid"></div>
@@ -83,7 +83,6 @@ function buildGrid() {
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 function setCaption(html) { document.getElementById('caption').innerHTML = html; }
 function showLegend(id) { document.getElementById(id).classList.add('vis'); }
-function hideLegend(id) { document.getElementById(id).classList.remove('vis'); }
 
 function applyFill(idx, fill, opacity) {
   heads[idx].style.fill = fill;
@@ -126,16 +125,6 @@ function restoreTransitions() {
   });
 }
 
-async function fadeToNeutral(indices, fadeDelay) {
-  for (let i = 0; i < indices.length; i++) {
-    setTimeout(() => {
-      applyFill(indices[i], NEUTRAL_FILL, NEUTRAL_OPACITY);
-      applyStroke(indices[i], 'transparent');
-    }, i * fadeDelay);
-  }
-  await delay(indices.length * fadeDelay + 400);
-}
-
 async function runAnimation() {
   resetAllImmediate();
   await delay(50);
@@ -145,30 +134,24 @@ async function runAnimation() {
   document.getElementById('replay').style.display = 'none';
   await delay(500);
 
-  const nd         = Array.from({length: 20}, (_, i) => i);
   const working    = Array.from({length: 63}, (_, i) => i);
   const chronic    = Array.from({length: 49}, (_, i) => i);
+  const nd         = Array.from({length: 17}, (_, i) => i);
   const nodisclose = Array.from({length: 38}, (_, i) => i);
 
   showLegend('leg-1');
-  await animateFill(nd, '#E69F00', 38);
-  setCaption('<strong>1 in 5 Americans</strong> are neurodivergent.');
-  await delay(1400);
-
-/* Don't hide the first stat in the legend
-  await fadeToNeutral(nd, 18);
-  hideLegend('leg-1');
-  setCaption('');
-  await delay(400);
-*/
-  showLegend('leg-2');
   await animateFill(working, '#56B4E9', 28);
   setCaption('<strong>63% of Americans</strong> are working age.');
   await delay(1200);
 
-  showLegend('leg-3');
+  showLegend('leg-2');
   await animateFill(chronic, '#0072B2', 30);
   setCaption('<strong>78.4% of those workers</strong> have at least one chronic condition.');
+  await delay(1200);
+
+  showLegend('leg-3');
+  await animateFill(nd, '#E69F00', 38);
+  setCaption('<strong>17% of workers</strong> are neurodivergent.');
   await delay(1200);
 
   showLegend('leg-4');

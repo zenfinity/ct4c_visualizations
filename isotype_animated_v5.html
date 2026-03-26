@@ -155,11 +155,12 @@ async function runAnimation() {
   setCaption('<strong>1 in 5 Americans</strong> are neurodivergent.');
   await delay(1400);
 
+/* Don't hide the first stat in the legend
   await fadeToNeutral(nd, 18);
   hideLegend('leg-1');
   setCaption('');
   await delay(400);
-
+*/
   showLegend('leg-2');
   await animateFill(working, '#56B4E9', 28);
   setCaption('<strong>63% of Americans</strong> are working age.');

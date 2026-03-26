@@ -31,7 +31,7 @@
   </div>
   <div class="grid" id="grid"></div>
   <div class="caption-area" id="caption"></div>
-  <button class="replay-btn" id="replay">replay</button>
+  <!-- <button class="replay-btn" id="replay">replay</button> -->
 </div>
 
 <script>
@@ -126,13 +126,16 @@ function restoreTransitions() {
 }
 
 async function runAnimation() {
+  document.getElementById('caption').innerHTML = '';
   resetAllImmediate();
   await delay(50);
   restoreTransitions();
   document.querySelectorAll('.leg-item').forEach(el => el.classList.remove('vis'));
   setCaption('');
-  document.getElementById('replay').style.display = 'none';
-  await delay(500);
+  // document.getElementById('replay').style.display = 'none';
+  // await delay(2000);
+  
+  
 
   const working    = Array.from({length: 63}, (_, i) => i);
   const chronic    = Array.from({length: 49}, (_, i) => i);
@@ -141,30 +144,34 @@ async function runAnimation() {
 
   showLegend('leg-1');
   await animateFill(working, '#56B4E9', 28);
-  setCaption('<strong>63% of Americans</strong> are working age.');
+  document.getElementById('caption').innerHTML += '<strong>63% of Americans</strong> are working age.<sup>1</sup><br>';
   await delay(1200);
 
   showLegend('leg-2');
   await animateFill(chronic, '#0072B2', 30);
-  setCaption('<strong>78.4% of those workers</strong> have at least one chronic condition.');
+  document.getElementById('caption').innerHTML += '<strong>78.4% of those workers</strong> have at least one chronic condition.<sup>2</sup><br>';
   await delay(1200);
 
   showLegend('leg-3');
   await animateFill(nd, '#E69F00', 38);
-  setCaption('<strong>17% of workers</strong> are neurodivergent.');
+  document.getElementById('caption').innerHTML += '<strong>17% of workers</strong> are neurodivergent.<sup>3</sup><br>';
   await delay(1200);
 
   showLegend('leg-4');
   await animateStroke(nodisclose, '#D55E00', 22);
-  setCaption('<strong>76% of them</strong> do not disclose their condition at work.');
+  document.getElementById('caption').innerHTML += '<strong>76% of them</strong> do not disclose their condition at work.<sup>4</sup><br>';
   await delay(500);
 
-  document.getElementById('replay').style.display = 'inline-block';
+  // document.getElementById('replay').style.display = 'inline-block';
 }
 
+
 buildGrid();
-document.getElementById('replay').addEventListener('click', runAnimation);
-setTimeout(runAnimation, 400);
+setTimeout(() => {
+  runAnimation().then(function repeat() {
+    setTimeout(() => runAnimation().then(repeat), 2000);
+  });
+}, 400);
 </script>
 </body>
 </html>

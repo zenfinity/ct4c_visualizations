@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viz preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f5f4f0; color: #111; padding: 2rem; }
+    h1 { font-size: 15px; font-weight: 500; color: #888; margin-bottom: 2rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; }
+    .card { background: #fff; border-radius: 12px; border: 0.5px solid #ddd; overflow: hidden; }
+    .card-label { font-size: 12px; color: #999; padding: 10px 14px 8px; border-bottom: 0.5px solid #eee; }
+    .card iframe { width: 500px; border: none; display: block; height: 600px; }
+  </style>
+</head>
+<body>
+  <h1>Viz preview</h1>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-label">isotype_animated_v5.html</div>
+      <iframe src="isotype_animated_v5.html"></iframe>
+    </div>
+
+    <!-- add more cards below as you build new vizzes -->
+    <!--
+    <div class="card">
+      <div class="card-label">your_next_viz.html</div>
+      <iframe src="your_next_viz.html"></iframe>
+    </div>
+    -->
+
+  </div>
+</body>
+</html>

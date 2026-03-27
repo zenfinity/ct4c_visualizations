@@ -16,6 +16,7 @@
     .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 340px; }
     .fig svg { width: 100%; display: block; }
     .caption-area { margin-top: 0.85rem; min-height: 36px; font-size: 13px; color: #666; line-height: 1.5; }
+    .caption-static { margin-top: 0.85rem; min-height: 36px; font-size: 13px; color: #666; line-height: 1.5; }
     .caption-area strong { color: #111; font-weight: 500; }
     .replay-btn { margin-top: 1rem; background: transparent; border: 0.5px solid #aaa; border-radius: 8px; padding: 5px 14px; font-size: 12px; cursor: pointer; color: #666; display: none; }
     .replay-btn:hover { background: #f5f5f5; }
@@ -24,14 +25,16 @@
 <body>
 <div class="wrap">
   <div class="legend">
-    <div class="leg-item" id="leg-1"><div class="leg-swatch" style="background:#56B4E9"></div><span>Working age — 63%</span></div>
-    <div class="leg-item" id="leg-2"><div class="leg-swatch" style="background:#0072B2"></div><span>Has chronic condition — 49%</span></div>
-    <div class="leg-item" id="leg-3"><div class="leg-stroke" style="border-color:#D55E00"></div><span>Does not disclose — 38%</span></div>
-    <div class="leg-item" id="leg-4"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent — 17%</span></div>
+    <div class="leg-item" id="leg-1"><div class="leg-swatch" style="background:#56B4E9"></div><span>Working age</span></div>
+    <div class="leg-item" id="leg-2"><div class="leg-swatch" style="background:#0072B2"></div><span>Has chronic condition</span></div>
+    <div class="leg-item" id="leg-3"><div class="leg-stroke" style="border-color:#D55E00"></div><span>Does not disclose</span></div>
+    <div class="leg-item" id="leg-4"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent</span></div>
   </div>
     
   <div class="grid" id="grid"></div>
+  
   <div class="caption-area" id="caption"></div>
+  <div class="caption-static" id="caption-static"><strong>US Population 331.5M</strong><sup>5</sup><br></div>
   <!-- <button class="replay-btn" id="replay">replay</button> -->
 </div>
 

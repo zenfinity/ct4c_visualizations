@@ -26,9 +26,10 @@
   <div class="legend">
     <div class="leg-item" id="leg-1"><div class="leg-swatch" style="background:#56B4E9"></div><span>Working age — 63%</span></div>
     <div class="leg-item" id="leg-2"><div class="leg-swatch" style="background:#0072B2"></div><span>Has chronic condition — 49%</span></div>
-    <div class="leg-item" id="leg-3"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent — 17%</span></div>
-    <div class="leg-item" id="leg-4"><div class="leg-stroke" style="border-color:#D55E00"></div><span>Does not disclose — 38%</span></div>
+    <div class="leg-item" id="leg-3"><div class="leg-stroke" style="border-color:#D55E00"></div><span>Does not disclose — 38%</span></div>
+    <div class="leg-item" id="leg-4"><div class="leg-swatch" style="background:#E69F00"></div><span>Neurodivergent — 17%</span></div>
   </div>
+    
   <div class="grid" id="grid"></div>
   <div class="caption-area" id="caption"></div>
   <!-- <button class="replay-btn" id="replay">replay</button> -->
@@ -153,16 +154,14 @@ async function runAnimation() {
   await delay(1200);
 
   showLegend('leg-3');
-  await animateFill(nd, '#E69F00', 38);
-  document.getElementById('caption').innerHTML += '<strong>17% of workers</strong> are neurodivergent.<sup>3</sup><br>';
+  await animateStroke(nodisclose, '#D55E00', 22);
+  document.getElementById('caption').innerHTML += '<strong>76% of them</strong> do not disclose their condition at work.<sup>3</sup><br>';
   await delay(1200);
 
   showLegend('leg-4');
-  await animateStroke(nodisclose, '#D55E00', 22);
-  document.getElementById('caption').innerHTML += '<strong>76% of them</strong> do not disclose their condition at work.<sup>4</sup><br>';
+  await animateFill(nd, '#E69F00', 38);
+  document.getElementById('caption').innerHTML += '<strong>17% of workers</strong> are neurodivergent.<sup>4</sup><br>';
   await delay(500);
-
-  // document.getElementById('replay').style.display = 'inline-block';
 }
 
 
